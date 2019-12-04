@@ -2,15 +2,15 @@ import firebase from 'firebase/app'
 
 
 const actions = {
-	async fetchTypeProduct({commit}, {nameConfig}) {
-		try {
-			const typeProduct = (await firebase.database().ref(`${nameConfig}`).once('value')).val() || {};
-			return Object.keys(typeProduct).map(key => ({...typeProduct[key], id: key}))
-		} catch (e) {
-			commit('setError', e);
-			throw e
-		}
-	},
+	// async fetchTypeProduct({commit}, {nameConfig}) {
+	// 	try {
+	// 		const typeProduct = (await firebase.database().ref(`${nameConfig}`).once('value')).val() || {};
+	// 		return Object.keys(typeProduct).map(key => ({...typeProduct[key], id: key}))
+	// 	} catch (e) {
+	// 		commit('setError', e);
+	// 		throw e
+	// 	}
+	// },
 	async fetchCategoryById({dispatch}, id) {
 		try {
 			const category = (await firebase.database().ref(`categories`).child(id).once('value')).val() || {}

@@ -15,10 +15,10 @@
 	export default {
 		name: "Config",
 		async mounted() {
-			this.typeProduct = await this.$store.dispatch('fetchTypeProduct', {nameConfig: 'typeProduct'});
-			this.seasonProduct = await this.$store.dispatch('fetchTypeProduct', {nameConfig: 'seasonProduct'});
-			this.materialProduct = await this.$store.dispatch('fetchTypeProduct', {nameConfig: 'materialProduct'});
-			this.sizeProduct = await this.$store.dispatch('fetchTypeProduct', {nameConfig: 'sizeProduct'})
+			this.typeProduct = await this.$store.dispatch('fetchTypeProduct');
+			this.seasonProduct = await this.$store.dispatch('fetchSeasonProduct');
+			this.materialProduct = await this.$store.dispatch('fetchMaterialProduct');
+			this.sizeProduct = await this.$store.dispatch('fetchSizeProduct')
 		},
 		components: {
 			DataTables: () => import('../../components/data_table/DataTables'),

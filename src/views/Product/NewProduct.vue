@@ -36,7 +36,7 @@
                             name="quantity"
                             label="Количество товара"
                             type="text"
-                            v-model="quantityInStock"
+                            v-model="inventory"
                             required
                             :rules="[v => !!v || 'Title is required']"
                     >
@@ -94,15 +94,15 @@
                 <v-layout row>
                     <v-flex xs12>
                         <v-file-input
+                                label="File input"
+                                prepend-icon="mdi-paperclip"
+                                color="deep-purple accent-4"
+                                outlined
+                                placeholder="Select your files"
                                 v-model="files"
                                 accept="image/*"
-                                color="deep-purple accent-4"
                                 counter
-                                label="File input"
                                 multiple
-                                placeholder="Select your files"
-                                prepend-icon="mdi-paperclip"
-                                outlined
                                 :show-size="1000"
                                 @change="onFileChange"
                         >
@@ -132,12 +132,7 @@
                 </v-layout>
                 <v-layout row>
                     <v-flex xs12>
-                        <v-switch label="Add to promo?" v-model="promo" color="success"></v-switch>
-                    </v-flex>
-                </v-layout>
-                <v-layout row>
-                    <v-flex xs12>
-                        <v-spacer></v-spacer>
+                        <v-spacer/>
                         <v-btn :disabled="!valid || loading" class="success" @click="createAd">Create ad</v-btn>
                     </v-flex>
                 </v-layout>
@@ -147,86 +142,82 @@
 </template>
 
 <script>
-	import {
-		mapGetters,
-		// mapActions
-	} from 'vuex'
+    import {mapGetters} from 'vuex'
 
-	export default {
-		async mounted() {
-			this.typeProduct = await this.$store.dispatch('fetchTypeProduct', {nameConfig: 'typeProduct'});
-			this.seasonProduct = await this.$store.dispatch('fetchTypeProduct', {nameConfig: 'seasonProduct'});
-			this.materialProduct = await this.$store.dispatch('fetchTypeProduct', {nameConfig: 'materialProduct'});
-			this.sizeProduct = await this.$store.dispatch('fetchTypeProduct', {nameConfig: 'sizeProduct'})
-		},
-		computed: {
-			...mapGetters({
-				loading: 'loading'
-			})
-		},
-		data() {
-			return {
-				typeProduct: [],
-				seasonProduct: [],
-				materialProduct: [],
-				sizeProduct: [],
-				idSeason: '',
-				idType: '',
-				idMaterial: '',
-				idSize: '',
-				files: [],
-				imageSrc: [],
-				title: '',
-				description: '',
-				price: '',
-				quantityInStock: '',
-				promo: false,
-				valid: false,
-
-			}
-		},
-		methods: {
-			createAd() {
-				// if (this.$refs.form.validate() && this.imageSrc) {
-				const newProduct = {
-					title: this.title,
-					description: this.description,
-					price: this.price,
-					quantityInStock: this.quantityInStock,
-					idSeason: this.idSeason,
-					idType: this.idType,
-					idMaterial: this.idMaterial,
-					idSize: this.idSize,
-					image: this.files
-				};
-				this.$store.dispatch('createProduct', newProduct)
-					.then(() => {
-						this.$router.push('/list-product')
-					}).catch(() => {
-				})
-				// }
-			},
-			onFileChange(event) {
-				this.createImages(event);
-			},
-			createImages(files) {
-				[...files].forEach(file => {
-					const reader = new FileReader();
-					reader.onload = e => this.imageSrc.push(e.target.result);
-					reader.readAsDataURL(file);
-				});
-			},
-			removeImage(index) {
-				this.imageSrc.splice(index, 1);
-				this.files.splice(index, 1);
-			},
-		},
-		watch: {
-			files: function (val) {
-				if (val.length === 0) {
-					this.imageSrc = []
-				}
-			}
-		}
-	}
+    export default {
+        async mounted() {
+            this.typeProduct = await this.$store.dispatch('fetchTypeProduct');
+            this.seasonProduct = await this.$store.dispatch('fetchSeasonProduct');
+            this.materialProduct = await this.$store.dispatch('fetchMaterialProduct');
+            this.sizeProduct = await this.$store.dispatch('fetchSizeProduct')
+        },
+        computed: {
+            ...mapGetters({
+                loading: 'loading'
+            })
+        },
+        data() {
+            return {
+                typeProduct: [],
+                seasonProduct: [],
+                materialProduct: [],
+                sizeProduct: [],
+                idSeason: '',
+                idType: '',
+                idMaterial: '',
+                idSize: '',
+                files: [],
+                imageSrc: [],
+                title: '',
+                description: '',
+                price: '',
+                inventory: '',
+                promo: false,
+                valid: false,
+            }
+        },
+        methods: {
+            createAd() {
+                // if (this.$refs.form.validate() && this.imageSrc) {
+                const newProduct = {
+                    title: this.title,
+                    description: this.description,
+                    price: this.price,
+                    inventory: this.inventory,
+                    idSeason: this.idSeason,
+                    idType: this.idType,
+                    idMaterial: this.idMaterial,
+                    idSize: this.idSize,
+                    image: this.files
+                };
+                this.$store.dispatch('createProduct', newProduct)
+                    .then(() => {
+                        this.$router.push('/list-product')
+                    }).catch(() => {
+                })
+                // }
+            },
+            onFileChange(event) {
+                this.createImages(event);
+            },
+            createImages(files) {
+                [...files].forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = e => this.imageSrc.push(e.target.result);
+                    reader.readAsDataURL(file);
+                });
+            },
+            removeImage(index) {
+                this.imageSrc.splice(index, 1);
+                this.files.splice(index, 1);
+            },
+        },
+        watch: {
+            files: function (val) {
+                if (val.length === 0) {
+                    this.imageSrc = [];
+                }
+            }
+        }
+    }
 </script>

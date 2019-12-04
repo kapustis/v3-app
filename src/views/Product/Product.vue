@@ -10,7 +10,6 @@
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-<!--                        <edit-ad :advertising="advertising1" v-if="isOwner"/>-->
                         <v-btn raised class="success">В корзину</v-btn>
                         <app-buy :product="product"></app-buy>
                     </v-card-actions>
@@ -40,19 +39,10 @@
 		computed: {
 			...mapGetters({
 				loading: 'loading',
-				user: 'user'
 			}),
 			product() {
 				return this.$store.getters.productByID(this.id)
 			},
-			isOwner() {
-				return this.productByID.ownerId === this.$store.getters.user.id
-			},
 		},
-		// components: {
-			// EditAd: () => import('../../components/EditAdvertising');
-            // eslint-disable-next-line vue/no-unused-components
-            // Buy: () => import('../../components/shared/Buy')
-		// }
 	}
 </script>

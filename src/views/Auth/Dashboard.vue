@@ -32,10 +32,7 @@
         </p>
 
         <template v-slot:actions>
-          <v-icon
-                  class="mr-2"
-                  small
-          >
+          <v-icon class="mr-2" small>
             mdi-clock-outline
           </v-icon>
           <span class="caption grey--text font-weight-light">updated 10 minutes ago</span>

@@ -16,7 +16,7 @@
                 </v-btn>
                 <v-btn icon text :to="'/cart'">
                     <v-badge bottom>
-                        <template v-slot:badge v-if="this.shoppingCart.length > 0">{{shoppingCart.length}}</template>
+                        <template v-slot:badge v-if="countCart > 0">{{countCart}}</template>
                         <v-icon>shopping_cart</v-icon>
                     </v-badge>
                 </v-btn>
@@ -29,21 +29,15 @@
 
 <script>
 	// Utilities
-	import {
-		mapGetters,
-		mapMutations
-	} from 'vuex'
+	import {mapGetters, mapMutations} from 'vuex'
 
 	export default {
 		name: "AppBar",
 		computed: {
 			...mapGetters({
-				shoppingCart: 'getCart',
+				countCart: 'getCartCount',
 			}),
-			countCart() {
 
-				return this.shoppingCart
-			},
 			inSignUser() {
 				return this.$store.getters.inSignUser
 			},
@@ -58,8 +52,6 @@
 				return [
 					{title: 'Контакты', icon: 'account_box', url: '/contacts'},
 					{title: 'Оплата и доставка', icon: 'account_box', url: '/paymentAndDelivery'},
-					// {title: 'Login', icon: 'account_box', url: '/login'},
-					// {title: 'Registration', icon: 'face', url: '/registration'}
 				]
 			}
 		},

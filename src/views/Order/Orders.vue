@@ -26,8 +26,8 @@
 <script>
 	import {
 		mapGetters,
-		mapMutations,
-		mapActions
+		// mapMutations,
+		// mapActions
 	} from 'vuex'
 
 	export default {

@@ -31,8 +31,16 @@ export default new Router({
 		},
 		{
 			path: '/list-product',
+
 			name: 'listProduct',
 			component: () => import('./views/Product/ListProduct.vue'),
+			// beforeEnter: AuthGuard
+		},
+		{
+			path: '/product-edit/:id',
+			props: true,
+			name: 'editProduct',
+			component: () => import('./views/Product/EditProduct.vue'),
 			// beforeEnter: AuthGuard
 		},
 		{
@@ -45,8 +53,6 @@ export default new Router({
 		// 	name: 'registration',
 		// 	component: () => import('./views/Auth/Registration.vue')
 		// },
-
-
 		{
 			path: '/product/:id',
 			props: true,
@@ -62,14 +68,21 @@ export default new Router({
 		{
 			path: '/new-orders',
 			name: 'newOrders',
-			component: () => import('./views/User/NewOrders.vue'),
-			beforeEnter: AuthGuard
+			component: () => import('./views/Order/NewOrders.vue'),
+			// beforeEnter: AuthGuard
 		},
 		{
 			path: '/orders',
 			name: 'orders',
-			component: () => import('./views/User/Orders.vue'),
+			component: () => import('./views/Order/Orders.vue'),
 			beforeEnter: AuthGuard
+		},
+		{
+			path: '/order/:id',
+			props: true,
+			name: 'order',
+			component: () => import('./views/Order/Order.vue'),
+			// beforeEnter: AuthGuard
 		}
 	]
 })

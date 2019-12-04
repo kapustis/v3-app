@@ -19,42 +19,43 @@
 </template>
 
 <script>
-	import {
-		mapGetters,
-		// mapMutations
-		mapActions
-	} from 'vuex'
+    import {
+        mapGetters,
+        // mapMutations,
+        mapActions
+    } from 'vuex'
 
-	export default {
-		name: 'App',
-		// created() {
-		// 	this.$vuetify.theme.dark = true;
-		// },
-		components: {
-			NavDrawer: () => import('./components/NavDrawer'),
-			AppBar: () => import('./components/AppBar'),
-			AppBarDashboard: () => import('./components/core/AppBar'),
-			NavDrawerDashboard: () => import('./components/core/Drawer')
-		},
-		computed: {
-			...mapGetters({
-				error: 'error',
-				inSignUser: 'inSignUser',
-			})
-		},
-		data: () => ({
-			on: false,
-			// date: (new Date()).getTime(),
-			interval: null,
-		}),
-		methods: {
-			...mapActions({clearError: 'clearError'}),
-		},
-		mounted() {
-			this.interval = setInterval(() => {
-				this.date = new Date()
-			}, 1000)
-		}
-	};
+    export default {
+        name: 'App',
+        // created() {
+        // 	this.$vuetify.theme.dark = true;
+        // },
+        components: {
+            NavDrawer: () => import('./components/NavDrawer'),
+            AppBar: () => import('./components/AppBar'),
+            AppBarDashboard: () => import('./components/core/AppBar'),
+            NavDrawerDashboard: () => import('./components/core/Drawer')
+        },
+        computed: {
+            ...mapGetters({
+                error: 'error',
+                inSignUser: 'inSignUser',
+            }),
+
+        },
+        data: () => ({
+            on: false,
+            date: (new Date()).getTime(),
+            interval: null,
+        }),
+        methods: {
+            ...mapActions({clearError: 'clearError'}),
+        },
+        mounted() {
+            this.interval = setInterval(() => {
+                this.date = new Date()
+            }, 1000)
+        }
+    };
 </script>
 

@@ -6,7 +6,6 @@ class User {
 	}
 }
 
-
 const state = {
 	user: false
 };
@@ -37,20 +36,20 @@ const actions = {
 			throw e
 		}
 	},
-	async register({dispatch, commit}, payload) {
-		try {
-			await firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password);
-			const uid = await dispatch('getUid');
-			await firebase.database().ref(`/users/${uid}/info`).set(payload)
-		} catch (e) {
-			commit('setError', e);
-			throw e
-		}
-	},
-	getUid() {
-		const user = firebase.auth().currentUser;
-		return user ? user.uid : null
-	},
+	// async register({dispatch, commit}, payload) {
+	// 	try {
+	// 		await firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password);
+	// 		const uid = await dispatch('getUid');
+	// 		await firebase.database().ref(`/users/${uid}/info`).set(payload)
+	// 	} catch (e) {
+	// 		commit('setError', e);
+	// 		throw e
+	// 	}
+	// },
+	// getUid() {
+	// 	const user = firebase.auth().currentUser;
+	// 	return user ? user.uid : null
+	// },
 	async logout() {
 		await firebase.auth().signOut();
 		window.location.href = '/';

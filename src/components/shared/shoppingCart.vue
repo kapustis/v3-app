@@ -1,19 +1,19 @@
 <template>
     <v-container>
-        <v-layout row wrap v-if="products.length > 0">
+        <v-layout row wrap v-if="countCart > 0">
             <v-flex xs12 sm12 md12>
                 <section id="cart">
                     <article class="product" v-for="(product, index) in products" :key="index">
                         <header>
                             <a class="open">
-                                <img :src="product.imageSrc[0]" alt="">
+                                <img :src="product.imageSrc" :alt="product.title">
                                 <h3>Open</h3>
                             </a>
                         </header>
 
                         <div class="content">
                             <h1>{{product.title}}</h1>
-                            <div style="top: 0px" class="type">
+                            <div style="top: 0" class="type">
                                 <v-btn icon dark @click="delProduct(index)">
                                     <v-icon class="red--text">{{'clear'}}</v-icon>
                                 </v-btn>
@@ -21,102 +21,63 @@
                         </div>
 
                         <footer class="content">
-                            <span class="qt-minus" @click="updateQuantity({id:product.id,count: -1})">-</span>
+                            <span class="qt-minus" :disabled="product.quantity === 1" @click="updateQuantity({id:product.id,count: -1})">-</span>
                             <span class="qt">{{product.quantity}}</span>
                             <span class="qt-plus" @click="updateQuantity({id:product.id,count:1})">+</span>
-                            <h2 class="full-price">{{fullPrice(product.price,product.quantity)}}&#8372;</h2>
+                            <h2 class="full-price">{{fullPrice(product.price,product.quantity) | currency}}</h2>
                             <h2 class="price">{{product.price}}&#8372;</h2>
                         </footer>
                     </article>
                 </section>
             </v-flex>
-            <app-buy :product="products"></app-buy>
+            <app-buy :product="products"/>
         </v-layout>
         <v-layout v-else>
             <h3>Корзина пуста</h3>
         </v-layout>
 
-        <!--        <footer id="site-footer">-->
-        <!--            <div class="container clearfix">-->
-        <!--                <div class="left">-->
-        <!--                    <h2 class="subtotal">Subtotal: <span>163.96</span>€</h2>-->
-        <!--                    <h3 class="tax">Taxes (5%): <span>8.2</span>€</h3>-->
-        <!--                    <h3 class="shipping">Shipping: <span>5.00</span>€</h3>-->
-        <!--                </div>-->
-        <!--                <div class="right">-->
-        <!--                    <h1 class="total">Total: <span>177.16</span>€</h1>-->
-        <!--                    <a class="btn">Купить</a>-->
-        <!--                </div>-->
-        <!--            </div>-->
-        <!--        </footer>-->
+        <footer id="site-footer">
+            <div class="container clearfix">
+                <div class="left">
+                    <h2 class="subtotal">Subtotal: <span>163.96</span>€</h2>
+                    <h3 class="tax">Taxes (5%): <span>8.2</span>€</h3>
+                    <h3 class="shipping">Shipping: <span>5.00</span>€</h3>
+                </div>
+                <div class="right">
+                    <h1 class="total">Total: <span>{{total | currency}}</span></h1>
+                    <a class="btn">Купить</a>
+                </div>
+            </div>
+        </footer>
     </v-container>
 </template>
 
 <script>
-	import {
-		mapGetters,
-		mapMutations
-	} from 'vuex'
+    import {mapGetters, mapMutations, mapActions} from 'vuex'
 
-	export default {
-		name: "shoppingCart",
-		computed: {
-			...mapGetters({
-				products: 'getCart',
-			})
-		},
-		data() {
-			return {
-				total: [],
-				full_price: []
-			}
-		},
-		methods: {
-			...mapMutations({
-				updateQuantity: 'UPDATE_QUANTITY',
-				delProduct: 'DELETE_PRODUCT'
-
-			}),
-			removeItem(id) {
-				alert("del" + id);
-			},
-			changeVal(el) {
-				let qt = parseFloat(el.parent().children(".qt").html());
-				let price = parseFloat(el.parent().children(".price").html());
-				let eq = Math.round(price * qt * 100) / 100;
-
-				el.parent().children(".full-price").html(eq + "€");
-
-				// changeTotal();
-			},
-			fullPrice(price, quantity) {
-				return Math.round((price * quantity) * 100) / 100;
-			},
-			changeTotal() {
-				// let price = 0;
-
-				// $(".full-price").each(function (index) {
-				// 	price += parseFloat($(".full-price").eq(index).html());
-				// });
-				//
-				// price = Math.round(price * 100) / 100;
-				// var tax = Math.round(price * 0.05 * 100) / 100
-				// var shipping = parseFloat($(".shipping span").html());
-				// var fullPrice = Math.round((price + tax + shipping) * 100) / 100;
-				//
-				// if (price == 0) {
-				// 	fullPrice = 0;
-				// }
-				//
-				// $(".subtotal span").html(price);
-				// $(".tax span").html(tax);
-				// $(".total span").html(fullPrice);
-			}
-
-		}
-	}
-
-
+    export default {
+        name: "shoppingCart",
+        computed: {
+            ...mapGetters({
+                items: 'getCart',
+                countCart: 'getCartCount',
+                products: 'cartProducts',
+                total: 'cartTotalPrice',
+            })
+        },
+        methods: {
+            ...mapMutations({delProduct: 'DELETE_PRODUCT',}),
+            ...mapActions({updateQuantity: 'updateQuantity',}),
+            fullPrice(price, quantity) {
+                return Math.round((price * quantity) * 100) / 100;
+            },
+        },
+        filters: {
+            currency: function (value) {
+                return '₴' + parseFloat(value).toFixed(2);
+            }
+        }
+    }
 </script>
 
 <style scoped>

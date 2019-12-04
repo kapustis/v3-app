@@ -1,7 +1,8 @@
 import firebase from 'firebase/app'
+import dateTimeFilter from "../../filters/dateTime.filter";
 
 class Order {
-    constructor(name, phone, city, address, payMethod, email, cart = [], createAt = null, done = "Не обработаный заказ", id = null) {
+    constructor(name, phone, city, address, payMethod, email, cart = [], createAt, done = "Не обработаный заказ", id = null) {
         this.name = name;
         this.phone = phone;
         this.city = city;
@@ -17,32 +18,47 @@ class Order {
 
 const state = {
     orders: [],
-    status: { 0:'Не обработан',
-		1:'Ожидает отправки',
-		2:'Товар отправлен',
-		3:'Деньги получины',
-		thre:'Не отправлен',
-		4:'Возврат',
-		5:'Не забрали',
-	}
-
-
+    status: ['Не обработаный заказ', 'Ожидает отправки', 'Товар отправлен', 'Деньги получены', 'Не отправлен', 'Возврат', 'Не забрали',]
+    // status: {
+    //     notProcessed: 'Не обработан',
+    //     awaitDelivery: 'Ожидает отправки',
+    //     productSend: 'Товар отправлен',
+    //     moneyReceived: 'Деньги получены',
+    //     notSend: 'Не отправлен',
+    //     backSend: 'Возврат',
+    //     notTaken: 'Не забрали',
+    // },
 };
 const getters = {
     getOrders(state) {
-        return state.orders
+        return state.orders;
     },
     getStatus(state) {
         return state.status;
+    },
+    orderByID(state) {
+        return oId => {
+            return state.orders.find(o => o.id === oId)
+        }
     }
 };
 const mutations = {
     SET_ORDERS(state, orders) {
-        state.orders = orders
+        state.orders = orders;
     },
+    UPDATE_ORDER(state, payload) {
+        // eslint-disable-next-line no-console
+        // console.log(payload);
+        const order = state.orders.find(o => {
+            return o.id === payload.id;
+        });
+        order.done = payload.done;
+    }
 };
 const actions = {
     async createOrder({commit, dispatch}, payload) {
+        let date = new Date();
+        date = dateTimeFilter(date, 'datetime');
         let newOrder = new Order(
             payload.name,
             payload.phone,
@@ -51,15 +67,21 @@ const actions = {
             payload.payMethod,
             payload.email,
             payload.cart,
-            'syka'
+            date
         );
         dispatch('clearError',);
         try {
             await firebase.database().ref(`orders`).push(newOrder);
+            let keys = Object.keys(payload.cart);
+            for (let i = 0; i < keys.length; i++) {
+                dispatch('decrementProductInventoryDB', payload.cart[i].id);
+                // eslint-disable-next-line no-console
+                // console.log(payload.cart[i].id);
+            }
             commit('CLEAR_CART')
         } catch (e) {
             commit('SET_ERROR', e.message);
-            throw e
+            throw e;
         }
     },
     async fetchOrders({commit}) {
@@ -70,10 +92,23 @@ const actions = {
                 const o = orders[key];
                 resOrders.push(new Order(o.name, o.phone, o.city, o.address, o.payMethod, o.email, o.cart, o.createAt, o.done, key))
             });
-            commit('SET_ORDERS', resOrders)
+            commit('SET_ORDERS', resOrders);
         } catch (e) {
             commit('SET_ERROR', e.message);
-            throw e
+            throw e;
+        }
+    },
+    async updateOrder({commit, dispatch}, payload) {
+        dispatch('clearError');
+        dispatch('setLoading', true);
+        try {
+            await firebase.database().ref('orders').child(payload.id).update({done: payload.done});
+            commit('UPDATE_ORDER', {id: payload.id, done: payload.done});
+            dispatch('setLoading', false);
+        } catch (e) {
+            dispatch('setLoading', false);
+            dispatch('setError', e.message);
+            throw e;
         }
     },
     async markOrderStatus({dispatch}, payload) {
@@ -82,7 +117,7 @@ const actions = {
             await firebase.database().ref(`orders`).child(payload).update({done: true})
         } catch (e) {
             dispatch('setError', e.message);
-            throw e
+            throw e;
         }
     }
 };
@@ -92,6 +127,6 @@ export default {
     state,
     getters,
     actions,
-    mutations
+    mutations,
 }
 

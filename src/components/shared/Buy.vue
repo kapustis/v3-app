@@ -49,20 +49,29 @@
 
 <script>
 	// import {eamil} from 'vuel'
-	export default {
+	// import dateTime from "../../filters/dateTime.filter";
+
+    export default {
 		name: "Buy",
+        // mounted() {
+        //     this.interval = setInterval(() => {
+        //         this.date = new Date()
+        //     }, 1000)
+        // },
 		props: ['product'],
 		data() {
 			return {
-				dialog: false,
-				localLoading: false,
-				name: '',
-				phone: '',
-				city: '',
-				address: '',
-				payMethod: '',
-				email: '',
-			}
+                date: new Date(),
+                interval: null,
+                dialog: false,
+                localLoading: false,
+                name: '',
+                phone: '',
+                city: '',
+                address: '',
+                payMethod: '',
+                email: '',
+            }
 		},
 		methods: {
 			onBuy() {
@@ -75,10 +84,8 @@
 						address: this.address,
 						payMethod: this.payMethod,
 						email: this.email,
-						// cart: [{'productId':this.product.id,'quantity': 1}],
 						cart: this.product,
-						// ownerId: this.product.ownerId
-
+                        // createAt: dateTime(this.date , 'datetime' ) ,
 					};
 					this.$store.dispatch('createOrder', newOrder)
 						.finally(() => {
@@ -87,8 +94,12 @@
 						})
 				}
 			}
-		}
-
+		},
+        // beforeDestroy() {
+        //     clearInterval(this.interval);
+            // this.date = null;
+            // console.log('destroy')
+		// },
 	}
 </script>
 

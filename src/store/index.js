@@ -12,6 +12,19 @@ export default new Vuex.Store({
 	modules,
 	state: {
 		drawer: false,
+
+	},
+	getters:{
+		// createdAt(){
+		// 	let dt = new Date();
+		// 	return `${
+		// 		(dt.getMonth() + 1).toString().padStart(2, '0')}/${
+		// 		dt.getDate().toString().padStart(2, '0')}/${
+		// 		dt.getFullYear().toString().padStart(4, '0')} ${
+		// 		dt.getHours().toString().padStart(2, '0')}:${
+		// 		dt.getMinutes().toString().padStart(2, '0')}:${
+		// 		dt.getSeconds().toString().padStart(2, '0')}`;
+		// }
 	},
 	mutations: {
 		SET_DRAWER: (state, payload) => (state.drawer = payload),
