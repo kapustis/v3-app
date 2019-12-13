@@ -85,7 +85,6 @@
 						payMethod: this.payMethod,
 						email: this.email,
 						cart: this.product,
-                        // createAt: dateTime(this.date , 'datetime' ) ,
 					};
 					this.$store.dispatch('createOrder', newOrder)
 						.finally(() => {

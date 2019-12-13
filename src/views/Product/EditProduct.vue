@@ -12,7 +12,7 @@
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
                     <v-toolbar-title>Редактирование {{this.product.title}}</v-toolbar-title>
-                    <v-spacer></v-spacer>
+                    <v-spacer/>
                     <v-toolbar-items>
                         <v-btn dark text @click="SaveChange">Обновить</v-btn>
                     </v-toolbar-items>
@@ -21,50 +21,22 @@
                     <v-subheader>окно редактирования товара</v-subheader>
                     <v-list-item>
                         <v-list-item-content>
-                            <v-text-field
-                                    outlined
-                                    auto-grow
-                                    name="title"
-                                    label="Название"
-                                    type="text"
-                                    v-model="editedTitle"
-                            ></v-text-field>
+                            <v-text-field outlined auto-grow name="title" label="Название" type="text" v-model="editedTitle"/>
                         </v-list-item-content>
                     </v-list-item>
                     <v-list-item>
                         <v-list-item-content>
-                            <v-textarea
-                                    outlined
-                                    auto-grow
-                                    name="description"
-                                    label="Описание"
-                                    type="text"
-                                    v-model="editedDescription"
-                            ></v-textarea>
+                            <v-textarea outlined auto-grow name="description" label="Описание" type="text" v-model="editedDescription"/>
                         </v-list-item-content>
                     </v-list-item>
                     <v-list-item>
                         <v-list-item-content>
-                            <v-text-field
-                                    outlined
-                                    auto-grow
-                                    name="description"
-                                    label="Цена"
-                                    type="text"
-                                    v-model="editedPrice"
-                            ></v-text-field>
+                            <v-text-field outlined auto-grow name="description" label="Цена" type="text" v-model="editedPrice"/>
                         </v-list-item-content>
                     </v-list-item>
                     <v-list-item>
                         <v-list-item-content>
-                            <v-text-field
-                                    outlined
-                                    auto-grow
-                                    name="inventory"
-                                    label="Количестово на складе"
-                                    type="text"
-                                    v-model="editedInventory"
-                            ></v-text-field>
+                            <v-text-field outlined auto-grow name="inventory" label="Количестово на складе" type="text" v-model="editedInventory"/>
                         </v-list-item-content>
                     </v-list-item>
                     <v-list-item>
@@ -77,7 +49,7 @@
                                     label="Outlined style"
                                     outlined
                                     v-model="editedMaterial"
-                            ></v-select>
+                            />
                         </v-list-item-content>
                     </v-list-item>
                     <v-list-item>
@@ -90,7 +62,7 @@
                                     label="Сезон"
                                     outlined
                                     v-model="editedSeason"
-                            ></v-select>
+                            />
                         </v-list-item-content>
                     </v-list-item>
                     <v-list-item>
@@ -103,7 +75,7 @@
                                     label="Тип"
                                     outlined
                                     v-model="editedSize"
-                            ></v-select>
+                            />
                         </v-list-item-content>
                     </v-list-item>
                     <v-list-item>
@@ -116,7 +88,7 @@
                                     label="Тип"
                                     outlined
                                     v-model="editedType"
-                            ></v-select>
+                            />
                         </v-list-item-content>
                     </v-list-item>
                     <v-list-item>
@@ -128,19 +100,12 @@
                                     label="Доход"
                                     type="text"
                                     v-model="editedProfit"
-                            ></v-text-field>
+                            />
                         </v-list-item-content>
                     </v-list-item>
                     <v-list-item>
                         <v-list-item-content>
-                            <v-text-field
-                                    outlined
-                                    auto-grow
-                                    name="inventory"
-                                    label="Количество возврата товара"
-                                    type="text"
-                                    v-model="editedPurchaseReturns"
-                            ></v-text-field>
+                            <v-text-field outlined auto-grow name="inventory" label="Количество возврата товара" type="text" v-model="editedPurchaseReturns"/>
                         </v-list-item-content>
                     </v-list-item>
                     <v-list-item>
@@ -208,11 +173,7 @@
                 season: [],
                 type: [],
                 size: [],
-                formData: {
-                    displayFileName: null,
-                    uploadFileData: null,
-                    file: null
-                },
+                formData: {displayFileName: null, uploadFileData: null, file: null},
                 dialog: false,
                 editedTitle: this.product.title,
                 editedInventory: this.product.inventory,
@@ -250,8 +211,8 @@
                 });
 
             },
-            removeImage(image,index ,id) {
-                this.$store.dispatch('imageDel', {image, index,id})
+            removeImage(image, index, id) {
+                this.$store.dispatch('imageDel', {image, index, id})
             },
             onFileChange(event) {
                 if (event.target.files && event.target.files.length) {
@@ -280,7 +241,7 @@
                 // image.append("fupload", this.formData.file);
                 let file = this.formData.file;
                 let id = this.product.id;
-                this.$store.dispatch('imageAdd', { file, id}).then(() => {
+                this.$store.dispatch('imageAdd', {file, id}).then(() => {
                     // this.showInfo("File was successfuly uploaded!");
                     this.formData = {
                         displayFileName: null,

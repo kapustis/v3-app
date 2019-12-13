@@ -32,8 +32,17 @@
                             v-model="selectedMaterial"
                     />
                 </v-flex>
+                <v-flex xs2 md1>
+                    <v-checkbox
+                            multiple
+                            v-for="item in sizeProduct"
+                            :key="item.id"
+                            :label="`${item.name}`"
+                            :value="item.id"
+                            v-model="selectedSize"
+                    />
+                </v-flex>
             </v-layout>
-
 
             <v-layout row wrap>
                 <v-flex xs12 sm6 md4 v-for="product of this.filterTest" :key="product.id">
@@ -59,12 +68,9 @@
         </v-container>
     </div>
     <div v-else>
-        <v-progress-linear indeterminate color="yellow darken-2"/>
-        <br>
-        <v-progress-linear indeterminate color="green"/>
-        <br>
-        <v-progress-linear indeterminate color="teal"/>
-        <br>
+        <v-progress-linear indeterminate color="yellow darken-2"/><br>
+        <v-progress-linear indeterminate color="green"/><br>
+        <v-progress-linear indeterminate color="teal"/><br>
         <v-progress-linear indeterminate color="cyan"/>
     </div>
 </template>
@@ -100,6 +106,9 @@
                     if (this.selectedMaterial.length > 0) {
                         result.push(this.selectedMaterial.indexOf(item.idMaterial) > -1);
                     }
+                    if (this.selectedSize.length > 0) {
+                        result.push(this.selectedSize.indexOf(item.idSize) > -1);
+                    }
                     return result.every(result => result);
                 })
             }
@@ -113,7 +122,7 @@
                 selectedType: '',
                 selectedSeason: '',
                 selectedMaterial: '',
-                items: ''
+                selectedSize: '',
             }
         },
         methods: {
@@ -133,7 +142,3 @@
 
     }
 </script>
-
-<style scoped>
-
-</style>

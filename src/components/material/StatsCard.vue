@@ -11,7 +11,7 @@
     </v-card>
 
     <div class="text-right">
-      <p class="body-2 grey--text font-weight-light mb-0" v-text="title"></p>
+      <p class="body-2 grey--text font-weight-light mb-0" v-text="title"/>
       <h3 class="headline font-weight-light text--primary">
         {{ value }} <small>{{ smallValue }}</small>
       </h3>
@@ -23,7 +23,7 @@
       <v-icon :color="subIconColor" size="20" class="mx-2">
         {{ subIcon }}
       </v-icon>
-      <span :class="subTextColor" class="caption font-weight-light" v-text="subText"></span>
+      <span :class="subTextColor" class="caption font-weight-light" v-text="subText"/>
     </template>
   </material-card>
 </template>

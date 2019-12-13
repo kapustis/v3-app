@@ -56,9 +56,32 @@
                 </material-card>
             </v-col>
             <v-col cols="12" md="4">
-                <div class="indigo">
-                    <img src="" alt="">
-                </div>
+                <material-card class="v-card-profile" v-for="(item, index) in cart" :key="index">
+                    <v-img :src="item.imageSrc" height="194" :alt="item.title"/>
+                    <v-card-text>{{item.title}}</v-card-text>
+                </material-card>
+                <!--todo добавить редактирование товара в заказе    -->
+                <material-card style="background: #f44336">
+                    <v-card-actions>
+                        <div>
+                            <v-select
+                                    color="#18CE0F"
+                                    label="Товары"
+                                    v-model="select"
+                                    :items="products"
+                                    item-text="title"
+                                    item-value="id"
+                                    return-object
+                                    outlined
+                            />
+                            <v-spacer/>
+                            <v-btn color="primary" depressed @click="addCart">
+                                <v-icon large color="blue-grey darken-2">mdi-plus-one</v-icon>
+                            </v-btn>
+                        </div>
+                    </v-card-actions>
+                </material-card>
+
             </v-col>
         </v-row>
     </v-container>

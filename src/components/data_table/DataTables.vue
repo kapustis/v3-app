@@ -4,7 +4,7 @@
             <v-expansion-panel-header>{{title}}</v-expansion-panel-header>
             <v-expansion-panel-content>
                 <v-data-table :headers="headers" :items="configItems" sort-by="calories" class="elevation-1">
-                    <template v-slot:top="">
+                    <template>
                         <v-toolbar flat color="white">
                             <div class="flex-grow-1"></div>
                             <v-dialog v-model="dialog" max-width="500px">
@@ -17,7 +17,7 @@
                                         <v-container>
                                             <v-row>
                                                 <v-col cols="12" sm="12" md="12">
-                                                    <v-text-field v-model="editedItem.name" label="Введите имя"></v-text-field>
+                                                    <v-text-field v-model="editedItem.name" label="Введите имя"/>
                                                 </v-col>
                                             </v-row>
                                         </v-container>

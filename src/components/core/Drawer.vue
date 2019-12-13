@@ -46,10 +46,7 @@
 
 <script>
     // Utilities
-    import {
-        mapMutations,
-        // mapState
-    } from 'vuex'
+    import {mapMutations} from 'vuex'
 
     export default {
         mounted () {
@@ -80,7 +77,7 @@
                 {
                     to: '/orders',
                     icon: 'mdi-clipboard-outline',
-                    text: 'Заказы'
+                    text: 'Архив заказов'
                 },
                 {
                     to: '/list-product',

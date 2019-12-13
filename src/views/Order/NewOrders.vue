@@ -2,15 +2,15 @@
     <v-container>
         <v-card>
             <v-card-title> Не обработаные заказы
-                <v-spacer></v-spacer>
+                <v-spacer/>
                 <v-text-field
                         v-model="search"
                         append-icon="search"
                         label="Поиск"
                         single-line
                         hide-details
-                ></v-text-field>
-                <v-spacer></v-spacer>
+                />
+                <v-spacer/>
                 <v-btn class="btn waves-effect waves-light btn-small" @click="refresh">
                     <i class="material-icons">refresh</i>
                 </v-btn>
@@ -43,11 +43,14 @@
                         <p>Отделение {{item.address}}</p>
                         <p class="success">{{item.payMethod}}</p>
                     </div>
-
+                </template>
+                <template v-slot:item.done="{ item }">
+                    <div>
+                        {{sName(item.done)}}
+                    </div>
                 </template>
                 <template v-slot:item.action="{ item }">
                     <v-btn icon :to="'/order/'+ item.id" ><v-icon small class="mr-2">edit</v-icon></v-btn>
-
                 </template>
             </v-data-table>
         </v-card>
@@ -67,15 +70,10 @@
         },
         computed: {
             ...mapGetters({
-                orders: 'getOrders',
+                orders: 'getNewOrders',
                 status: 'getStatus',
             }),
         },
-        // async mounted() {
-        //     if (this.getOrders.length === 0) {
-        //         await this.fetchOrders;
-        //     }
-        // },
         data() {
             return {
                 search: '',
@@ -84,19 +82,22 @@
                     {text: 'ФИО', value: 'city'},
                     {text: 'Статус', value: 'done'},
                     {text: 'Дата', value: 'createAt'},
-                    { text: 'Actions', value: 'action', sortable: false }
+                    {text: 'Actions', value: 'action', sortable: false }
                 ],
             }
         },
         methods:{
-            // ...mapActions(['fetchOrders']),
             refresh(){
                 this.$store.dispatch('fetchOrders')
+            },
+            sName(code){
+                const res =  this.status.find(function (e) {
+                    if(e.code === code){
+                        return e.desc
+                    }
+                });
+                return res.desc
             }
         }
     }
 </script>
-
-<style scoped>
-
-</style>
